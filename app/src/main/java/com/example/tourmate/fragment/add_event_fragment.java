@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.tourmate.R;
+import com.example.tourmate.pojos.TourmateEvent;
+import com.example.tourmate.viewmodels.EventViewModel;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -32,6 +35,7 @@ private Button startDate,endDate,submitEvent;
 
   private String  departureDate ;
   private String  endEventDate ;
+  private EventViewModel eventViewModel;
 
     public add_event_fragment() {
         // Required empty public constructor
@@ -47,6 +51,8 @@ private Button startDate,endDate,submitEvent;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
 
         nameET = view.findViewById(R.id.event_name);
         departureET = view.findViewById(R.id.departure_place);
@@ -80,7 +86,25 @@ private Button startDate,endDate,submitEvent;
                 String eventName = nameET.getText().toString();
                 String startPlace = departureET.getText().toString();
                 String destination = destinationET.getText().toString();
-                String bedget = budgetET.getText().toString();
+                String budget = budgetET.getText().toString();
+
+                if (eventName.isEmpty()){
+                    nameET.setError("Event Name Should Not be Empty..!");
+                }
+                if (startPlace.isEmpty()){
+                    departureET.setError("Starting Place Should Not be Empty..!");
+                }
+                if (destination.isEmpty()){
+                    destinationET.setError("Destination Should Not be Empty..!");
+                }
+                if (budget.isEmpty()){
+                    budgetET.setError("Budget Should Not be Empty..!");
+                }
+                else{
+                    TourmateEvent tourmateEvent = new TourmateEvent(null,eventName,startPlace,
+                            destination,Double.valueOf(budget),departureDate,endEventDate);
+                    eventViewModel.saveEvent(tourmateEvent);
+                }
             }
         });
 
@@ -103,6 +127,8 @@ private Button startDate,endDate,submitEvent;
             Calendar calendar = Calendar.getInstance();
             calendar.set(i,i1,i2);
             departureDate = new SimpleDateFormat("dd/mm/yyyy").format(calendar.getTime());
+            startDate.setText(departureDate);
+
         }
     };
 
@@ -124,6 +150,7 @@ private Button startDate,endDate,submitEvent;
             Calendar calendar = Calendar.getInstance();
             calendar.set(i,i1,i2);
             endEventDate = new SimpleDateFormat("dd/mm/yyyy").format(calendar.getTime());
+            endDate.setText(endEventDate);
         }
     };
 }

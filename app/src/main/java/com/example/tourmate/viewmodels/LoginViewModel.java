@@ -3,20 +3,20 @@ package com.example.tourmate.viewmodels;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.tourmate.repos.FirebaseRepository;
+import com.example.tourmate.repos.LoginRepository;
 
 public class LoginViewModel extends ViewModel {
 
     public enum AuthenticationState{
         AUTHENTICATED,UNAUTHENTICATED
     }
-    private FirebaseRepository repository;
+    private LoginRepository repository;
     public MutableLiveData<AuthenticationState> stateLiveData;
     public MutableLiveData<String > errormessage = new MutableLiveData<>();
 
     public LoginViewModel(){
         stateLiveData = new MutableLiveData<>();
-        repository = new FirebaseRepository(stateLiveData);
+        repository = new LoginRepository(stateLiveData);
         errormessage = repository.getErrormessage();
         if (repository.getFirebaseUser() != null){
             stateLiveData.postValue(AuthenticationState.AUTHENTICATED);
