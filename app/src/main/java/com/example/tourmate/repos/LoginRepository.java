@@ -45,6 +45,32 @@ public class LoginRepository {
         return stateLiveData;
     }
 
+    ///register user
+
+    public MutableLiveData<LoginViewModel.AuthenticationState> registerFirebaseUser(String email, String password){
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if (task.isSuccessful()){
+                    firebaseUser = firebaseAuth.getCurrentUser();
+                    stateLiveData.postValue(LoginViewModel.AuthenticationState.AUTHENTICATED);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                stateLiveData.postValue(LoginViewModel.AuthenticationState.UNAUTHENTICATED);
+                errormessage.postValue(e.getLocalizedMessage());
+            }
+        });
+        return stateLiveData;
+    }
+
+    ///register user End
+
+
     public FirebaseUser getFirebaseUser(){
 
         return firebaseUser;

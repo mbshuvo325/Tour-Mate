@@ -21,11 +21,6 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/register_Fragment"
-        android:name="com.example.tourmate.fragment.Register_Fragment"
-        android:label="fragment_register_"
-        tools:layout="@layout/fragment_register_" />
-    <fragment
         android:id="@+id/event_List"
         android:name="com.example.tourmate.fragment.Event_List"
         android:label="fragment_event__list"

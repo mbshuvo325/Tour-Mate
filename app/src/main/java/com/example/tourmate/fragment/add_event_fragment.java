@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,12 +105,12 @@ private Button startDate,endDate,submitEvent;
                     TourmateEvent tourmateEvent = new TourmateEvent(null,eventName,startPlace,
                             destination,Double.valueOf(budget),departureDate,endEventDate);
                     eventViewModel.saveEvent(tourmateEvent);
+                    Navigation.findNavController(view).navigate(R.id.event_List);
                 }
             }
         });
 
     }
-
     private void showStartDatepickerDialog() {
 
         Calendar calendar = Calendar.getInstance();
@@ -126,7 +127,7 @@ private Button startDate,endDate,submitEvent;
         public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(i,i1,i2);
-            departureDate = new SimpleDateFormat("dd/mm/yyyy").format(calendar.getTime());
+            departureDate = new SimpleDateFormat("dd/MM/yyyy").format(calendar.getTime());
             startDate.setText(departureDate);
 
         }
@@ -149,7 +150,7 @@ private Button startDate,endDate,submitEvent;
         public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(i,i1,i2);
-            endEventDate = new SimpleDateFormat("dd/mm/yyyy").format(calendar.getTime());
+            endEventDate = new SimpleDateFormat("dd/MM/yyyy").format(calendar.getTime());
             endDate.setText(endEventDate);
         }
     };

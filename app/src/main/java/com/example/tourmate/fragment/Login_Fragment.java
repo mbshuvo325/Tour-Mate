@@ -70,7 +70,10 @@ public class Login_Fragment extends Fragment {
         registerbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.register_Fragment);
+                String email = usernameET.getText().toString();
+                String password = passwordET.getText().toString();
+                loginViewModel.registeruser(email,password);
+               /// Navigation.findNavController(view).navigate(R.id.register_Fragment);
             }
         });
         loginViewModel.stateLiveData.observe(this, new Observer<LoginViewModel.AuthenticationState>() {
@@ -78,10 +81,10 @@ public class Login_Fragment extends Fragment {
             public void onChanged(LoginViewModel.AuthenticationState authenticationState) {
                switch (authenticationState){
                    case AUTHENTICATED:
-                       Navigation.findNavController(view).navigate(R.id.action_login_Fragment_to_event_List);
+                        Navigation.findNavController(view).navigate(R.id.action_login_Fragment_to_event_List);
                        break;
                    case UNAUTHENTICATED:
-
+                       statusTv.setText("Login Unsuccessful Try Again");
                        break;
                }
             }

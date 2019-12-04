@@ -3,9 +3,14 @@ package com.example.tourmate.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,12 +20,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tourmate.R;
+import com.example.tourmate.adapter.EveentAdapter;
+import com.example.tourmate.pojos.TourmateEvent;
+import com.example.tourmate.viewmodels.EventViewModel;
+
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Event_List extends Fragment {
+
+    private EventViewModel eventViewModel;
+    private EveentAdapter adapter;
+    private RecyclerView eventRV;
 
 
     public Event_List() {
@@ -55,7 +69,23 @@ public class Event_List extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
         return inflater.inflate(R.layout.fragment_event__list, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        eventViewModel.eventListLD.observe(this, new Observer<List<TourmateEvent>>() {
+            @Override
+            public void onChanged(List<TourmateEvent> tourmateEvents) {
+                eventRV = view.findViewById(R.id.eventRV);
+                adapter = new EveentAdapter(getActivity(),tourmateEvents);
+                LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+                eventRV.setLayoutManager(llm);
+                eventRV.setAdapter(adapter);
+            }
+        });
+
+    }
 }

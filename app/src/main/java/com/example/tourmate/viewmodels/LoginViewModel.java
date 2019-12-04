@@ -8,7 +8,8 @@ import com.example.tourmate.repos.LoginRepository;
 public class LoginViewModel extends ViewModel {
 
     public enum AuthenticationState{
-        AUTHENTICATED,UNAUTHENTICATED
+        AUTHENTICATED,
+        UNAUTHENTICATED
     }
     private LoginRepository repository;
     public MutableLiveData<AuthenticationState> stateLiveData;
@@ -26,6 +27,10 @@ public class LoginViewModel extends ViewModel {
     }
     public void loginuser(String email, String password){
        stateLiveData =  repository.loginFirebaseUser(email, password);
+    }
+
+    public void registeruser(String email, String password){
+        stateLiveData =  repository.registerFirebaseUser(email, password);
     }
 
 }
