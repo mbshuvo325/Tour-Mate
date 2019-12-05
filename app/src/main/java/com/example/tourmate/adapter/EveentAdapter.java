@@ -1,6 +1,8 @@
 package com.example.tourmate.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +37,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EventViewHolder holder, final int position) {
         holder.eventName.setText(eventList.get(position).getEventName());
         holder.startPlace.setText(eventList.get(position).getDeparture());
         holder.destination.setText(eventList.get(position).getDestination());
@@ -52,9 +54,36 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
+                        String eventId = eventList.get(position).getEventId();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("id",eventId);
                         switch (menuItem.getItemId()){
                             case R.id.details:
+                                ///details:
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                LayoutInflater inflater = LayoutInflater.from(context);
+                                View view = inflater.inflate(R.layout.event_details_dialog,null);
+                                builder.setTitle("Event Details");
+                                builder.setIcon(R.drawable.ic_details_24dp);
 
+                                final TextView showName = view.findViewById(R.id.event_name);
+                                final TextView showStartPlace = view.findViewById(R.id.start_place);
+                                final TextView showEndPlace = view.findViewById(R.id.end_place);
+                                final TextView showStartDate = view.findViewById(R.id.start_date);
+                                final TextView showEndDate = view.findViewById(R.id.end_date);
+                                final TextView showBudget = view.findViewById(R.id.budget);
+
+                                showName.setText(eventList.get(position).getEventName());
+                                showStartPlace.setText(eventList.get(position).getDeparture());
+                                showEndPlace.setText(eventList.get(position).getDestination());
+                                showStartDate.setText(eventList.get(position).getStartDate());
+                                showEndDate.setText(eventList.get(position).getEndDate());
+                                showBudget.setText(String.valueOf(eventList.get(position).getEventbudget()));
+
+                                builder.setPositiveButton("Ok",null);
+                                builder.setView(view);
+                                final AlertDialog dialog = builder.create();
+                                dialog.show();
                                 break;
                             case R.id.edit:
 
@@ -73,7 +102,8 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
+
             }
         });
 
