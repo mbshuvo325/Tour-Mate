@@ -11,6 +11,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tourmate.R;
@@ -102,7 +103,10 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String eventId = eventList.get(position).getEventId();
+                Bundle bundle = new Bundle();
+                bundle.putString("id",eventId);
+                Navigation.findNavController(view).navigate(R.id.action_event_List_to_event_details_fragment,bundle);
 
             }
         });
