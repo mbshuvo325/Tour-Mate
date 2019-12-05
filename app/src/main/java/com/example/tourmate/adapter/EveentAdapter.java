@@ -2,8 +2,10 @@ package com.example.tourmate.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,40 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
         holder.startDate.setText(eventList.get(position).getStartDate());
         holder.endDate.setText(eventList.get(position).getEndDate());
         holder.budget.setText(String.valueOf(eventList.get(position).getEventbudget()));
+        holder.info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, view);
+                popupMenu.getMenuInflater()
+                        .inflate(R.menu.event_row_menu, popupMenu.getMenu());
+                popupMenu.show();
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            case R.id.details:
+
+                                break;
+                            case R.id.edit:
+
+                                break;
+                            case R.id.delete:
+
+                                break;
+                        }
+
+                        return false;
+                    }
+                });
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
 
     }
 
@@ -50,7 +86,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
 
 
     class EventViewHolder extends RecyclerView.ViewHolder{
-        private TextView eventName, startPlace,destination
+        private TextView eventName,info, startPlace,destination
                 ,startDate,endDate,budget,leftDay;
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,6 +98,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
             endDate = itemView.findViewById(R.id.end_Date);
             budget = itemView.findViewById(R.id.row_budget);
             leftDay = itemView.findViewById(R.id.day_left);
+            info = itemView.findViewById(R.id.info_btn);
 
         }
     }
