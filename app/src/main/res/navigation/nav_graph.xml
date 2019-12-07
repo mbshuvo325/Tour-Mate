@@ -47,7 +47,7 @@
         tools:layout="@layout/fragment_add_event_fragment" />
     <fragment
         android:id="@+id/event_details_fragment"
-        android:name="com.example.tourmate.event_details_fragment"
+        android:name="com.example.tourmate.fragment.event_details_fragment"
         android:label="fragment_event_details_fragment"
         tools:layout="@layout/fragment_event_details_fragment" />
 </navigation>

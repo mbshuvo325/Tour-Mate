@@ -92,13 +92,13 @@ private Button startDate,endDate,submitEvent;
                 if (eventName.isEmpty()){
                     nameET.setError("Event Name Should Not be Empty..!");
                 }
-                if (startPlace.isEmpty()){
+               else if (startPlace.isEmpty()){
                     departureET.setError("Starting Place Should Not be Empty..!");
                 }
-                if (destination.isEmpty()){
+               else if (destination.isEmpty()){
                     destinationET.setError("Destination Should Not be Empty..!");
                 }
-                if (budget.isEmpty()){
+               else if (budget.isEmpty()){
                     budgetET.setError("Budget Should Not be Empty..!");
                 }
                 else{

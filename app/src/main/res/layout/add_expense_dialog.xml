@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Expense Name"
+        android:padding="20dp"
+        android:inputType="text"
+        android:id="@+id/expense_name"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:hint="Enter Expense Amount"
+        android:inputType="number"
+        android:id="@+id/expense_Amount"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:background="#cd5c5c"
+            android:id="@+id/cancel_dialog"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:layout_width="200dp"
+            android:padding="10dp"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_weight="1"
+            android:background="#98fb98"
+            android:id="@+id/save_expense"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
