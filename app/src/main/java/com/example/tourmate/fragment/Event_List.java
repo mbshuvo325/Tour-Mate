@@ -59,7 +59,7 @@ public class Event_List extends Fragment {
         switch (item.getItemId()){
             case R.id.add_event_id:
                Navigation.findNavController(getActivity(),R.id.nav_host_fragment)
-                       .navigate(R.id.action_event_List_to_add_event_fragment);
+                       .navigate(R.id.add_event_fragment);
                 break;
         }
         return super.onOptionsItemSelected(item);

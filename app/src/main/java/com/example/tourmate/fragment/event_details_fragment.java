@@ -13,8 +13,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +25,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.tourmate.R;
+import com.example.tourmate.adapter.ExpenseAdapter;
 import com.example.tourmate.helper.EventUtils;
 import com.example.tourmate.pojos.EventExpense;
 import com.example.tourmate.viewmodels.ExpenseViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 /**
@@ -37,11 +42,10 @@ import java.util.List;
 public class event_details_fragment extends Fragment {
 
     private RecyclerView expenseRV;
+    private ExpenseAdapter adapter;
     private FloatingActionButton addExpense;
-    private Context context;
     private String  eventId = null;
     private ExpenseViewModel expenseViewModel;
-
     private TextView showTotalExpense;
 
 
@@ -60,18 +64,26 @@ public class event_details_fragment extends Fragment {
         if (bundle != null){
             eventId = bundle.getString("id");
         }
+        expenseViewModel.getAllExpenes(eventId);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event_details_fragment, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         showTotalExpense = view.findViewById(R.id.totalExpense);
+
 
         expenseViewModel.expenseLD.observe(this, new Observer<List<EventExpense>>() {
             @Override
             public void onChanged(List<EventExpense> eventExpenses) {
+
+                expenseRV = view.findViewById(R.id.expenseRV);
+                adapter = new ExpenseAdapter(getActivity(),eventExpenses);
+                LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+                expenseRV.setLayoutManager(llm);
+                expenseRV.setAdapter(adapter);
                 Double totalExpense = 0.0;
                 for (EventExpense ex: eventExpenses){
                     totalExpense += ex.getExpenseAmount();
@@ -117,6 +129,13 @@ public class event_details_fragment extends Fragment {
                             expenseViewModel.saveExpense(expense);
                             dialog.dismiss();
                         }
+                    }
+                });
+
+                Cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
                     }
                 });
             }

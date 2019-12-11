@@ -50,4 +50,24 @@
         android:name="com.example.tourmate.fragment.event_details_fragment"
         android:label="fragment_event_details_fragment"
         tools:layout="@layout/fragment_event_details_fragment" />
+    <fragment
+        android:id="@+id/profile_fragment"
+        android:name="com.example.tourmate.fragment.profile_fragment"
+        android:label="fragment_profile_fragment"
+        tools:layout="@layout/fragment_profile_fragment" />
+    <fragment
+        android:id="@+id/weather_fragment"
+        android:name="com.example.tourmate.fragment.weather_fragment"
+        android:label="fragment_weather_fragment"
+        tools:layout="@layout/fragment_weather_fragment" />
+    <fragment
+        android:id="@+id/location_fragment"
+        android:name="com.example.tourmate.fragment.location_fragment"
+        android:label="fragment_location_fragment"
+        tools:layout="@layout/fragment_location_fragment" />
+    <fragment
+        android:id="@+id/compas_fragment"
+        android:name="com.example.tourmate.fragment.compas_fragment"
+        android:label="fragment_compas_fragment"
+        tools:layout="@layout/fragment_compas_fragment" />
 </navigation>

@@ -15,14 +15,18 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tourmate.R;
+import com.example.tourmate.fragment.event_details_fragment;
+import com.example.tourmate.pojos.EventExpense;
 import com.example.tourmate.pojos.TourmateEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewHolder> {
 
     private Context context;
     private List<TourmateEvent> eventList;
+    private List<EventExpense> eventExpenses = new ArrayList<>();
 
     public EveentAdapter(Context context, List<TourmateEvent> eventList) {
         this.context = context;
@@ -44,7 +48,6 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
         holder.destination.setText(eventList.get(position).getDestination());
         holder.startDate.setText(eventList.get(position).getStartDate());
         holder.endDate.setText(eventList.get(position).getEndDate());
-        holder.budget.setText(String.valueOf(eventList.get(position).getEventbudget()));
         holder.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,12 +70,18 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
                                 builder.setTitle("Event Details");
                                 builder.setIcon(R.drawable.ic_details_24dp);
 
+                                Double totalExpense = 0.0;
+                                for (EventExpense ex: eventExpenses){
+                                    totalExpense += ex.getExpenseAmount();
+                                }
+
                                 final TextView showName = view.findViewById(R.id.event_name);
                                 final TextView showStartPlace = view.findViewById(R.id.start_place);
                                 final TextView showEndPlace = view.findViewById(R.id.end_place);
                                 final TextView showStartDate = view.findViewById(R.id.start_date);
                                 final TextView showEndDate = view.findViewById(R.id.end_date);
                                 final TextView showBudget = view.findViewById(R.id.budget);
+                                final TextView showexpense = view.findViewById(R.id.expense);
 
                                 showName.setText(eventList.get(position).getEventName());
                                 showStartPlace.setText(eventList.get(position).getDeparture());
@@ -80,6 +89,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
                                 showStartDate.setText(eventList.get(position).getStartDate());
                                 showEndDate.setText(eventList.get(position).getEndDate());
                                 showBudget.setText(String.valueOf(eventList.get(position).getEventbudget()));
+                                showexpense.setText(String.valueOf(totalExpense));
 
                                 builder.setPositiveButton("Ok",null);
                                 builder.setView(view);
@@ -106,7 +116,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
                 String eventId = eventList.get(position).getEventId();
                 Bundle bundle = new Bundle();
                 bundle.putString("id",eventId);
-                Navigation.findNavController(view).navigate(R.id.action_event_List_to_event_details_fragment,bundle);
+                Navigation.findNavController(view).navigate(R.id.event_details_fragment,bundle);
 
             }
         });
@@ -130,7 +140,6 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
             destination = itemView.findViewById(R.id.end_place);
             startDate = itemView.findViewById(R.id.start_row_date);
             endDate = itemView.findViewById(R.id.end_Date);
-            budget = itemView.findViewById(R.id.row_budget);
             leftDay = itemView.findViewById(R.id.day_left);
             info = itemView.findViewById(R.id.info_btn);
 
