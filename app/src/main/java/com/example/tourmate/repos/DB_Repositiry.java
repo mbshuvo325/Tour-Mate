@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.tourmate.pojos.TourmateEvent;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,6 +53,28 @@ public class DB_Repositiry {
         String eventId = eventRef.push().getKey();
         event.setEventId(eventId);
         eventRef.child(eventId).setValue(event);
+    }
+
+    public void deleteEventFromDB(TourmateEvent eventPojo){
+
+        final String eventID = eventPojo.getEventId();
+        eventRef.child(eventID).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                DatabaseReference expenseRef = userRef.child("Expense");
+                expenseRef.child(eventID).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
 }

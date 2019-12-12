@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.tourmate.pojos.EventExpense;
 import com.example.tourmate.pojos.TourmateEvent;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -57,5 +59,10 @@ public class ExpenseRepository {
             }
         });
         return expenseLD;
+    }
+
+    public void deleteExpenseFromDB(EventExpense expensepojo){
+        final String expenseID = expensepojo.getExpenseID();
+        expenseRef.child(expensepojo.getEventID()).child(expenseID).removeValue();
     }
 }

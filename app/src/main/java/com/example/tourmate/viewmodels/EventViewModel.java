@@ -20,4 +20,7 @@ public class EventViewModel extends ViewModel {
     public void saveEvent(TourmateEvent event){
         db_repositiry.saveNewEventToFirebaseDB(event);
     }
+    public void DeleteEvent(TourmateEvent event){
+        db_repositiry.deleteEventFromDB(event);
+    }
 }

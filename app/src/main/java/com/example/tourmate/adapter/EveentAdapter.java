@@ -2,6 +2,7 @@ package com.example.tourmate.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -18,6 +20,8 @@ import com.example.tourmate.R;
 import com.example.tourmate.fragment.event_details_fragment;
 import com.example.tourmate.pojos.EventExpense;
 import com.example.tourmate.pojos.TourmateEvent;
+import com.example.tourmate.viewmodels.EventViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +31,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
     private Context context;
     private List<TourmateEvent> eventList;
     private List<EventExpense> eventExpenses = new ArrayList<>();
+    private EventViewModel eventViewModel = new EventViewModel();
 
     public EveentAdapter(Context context, List<TourmateEvent> eventList) {
         this.context = context;
@@ -48,6 +53,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
         holder.destination.setText(eventList.get(position).getDestination());
         holder.startDate.setText(eventList.get(position).getStartDate());
         holder.endDate.setText(eventList.get(position).getEndDate());
+        final TourmateEvent event = eventList.get(position);
         holder.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +106,28 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
 
                                 break;
                             case R.id.delete:
-
+                                final AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                                builder1.setTitle("Delete Event!");
+                                builder1.setIcon(R.drawable.ic_delete_24dp);
+                                builder1.setMessage("Do You Want to Delete This Event...?");
+                                builder1.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        eventViewModel.DeleteEvent(event);
+                                        final AlertDialog dialog = builder1.create();
+                                        dialog.dismiss();
+                                        Toast.makeText(context, "Successfully delete", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                 builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        final AlertDialog dialog = builder1.create();
+                                        dialog.dismiss();
+                                    }
+                                });
+                                final AlertDialog dialog1 = builder1.create();
+                                dialog1.show();
                                 break;
                         }
 
@@ -131,7 +158,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
 
     class EventViewHolder extends RecyclerView.ViewHolder{
         private TextView eventName,info, startPlace,destination
-                ,startDate,endDate,budget,leftDay;
+                ,startDate,endDate,leftDay;
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
 

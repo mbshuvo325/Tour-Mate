@@ -22,4 +22,8 @@ public class ExpenseViewModel extends ViewModel {
     public void getAllExpenes(String eventId){
         expenseLD = repository.getAllExpensesByEventId(eventId);
     }
+
+    public void DeleteExpense(EventExpense expense){
+        repository.deleteExpenseFromDB(expense);
+    }
 }

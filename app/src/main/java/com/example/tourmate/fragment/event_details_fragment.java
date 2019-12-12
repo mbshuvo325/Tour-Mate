@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,6 +30,7 @@ import com.example.tourmate.adapter.ExpenseAdapter;
 import com.example.tourmate.helper.EventUtils;
 import com.example.tourmate.pojos.EventExpense;
 import com.example.tourmate.viewmodels.ExpenseViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -74,7 +76,9 @@ public class event_details_fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         showTotalExpense = view.findViewById(R.id.totalExpense);
 
-
+       /* final BottomNavigationView bottomNav;
+        bottomNav = view.findViewById(R.id.bottom_navigation);
+        bottomNav.setVisibility(View.VISIBLE);*/
         expenseViewModel.expenseLD.observe(this, new Observer<List<EventExpense>>() {
             @Override
             public void onChanged(List<EventExpense> eventExpenses) {
@@ -142,4 +146,5 @@ public class event_details_fragment extends Fragment {
         });
 
     }
+
 }

@@ -88,6 +88,8 @@ private Button startDate,endDate,submitEvent;
                 String startPlace = departureET.getText().toString();
                 String destination = destinationET.getText().toString();
                 String budget = budgetET.getText().toString();
+                String firstDate = startDate.getText().toString();
+                String endtDate = endDate.getText().toString();
 
                 if (eventName.isEmpty()){
                     nameET.setError("Event Name Should Not be Empty..!");
@@ -100,6 +102,12 @@ private Button startDate,endDate,submitEvent;
                 }
                else if (budget.isEmpty()){
                     budgetET.setError("Budget Should Not be Empty..!");
+                }
+               else if (firstDate.isEmpty()){
+                   startDate.setError("Date Should not empty");
+                }
+                else if (endtDate.isEmpty()){
+                    endDate.setError("Date Should not empty");
                 }
                 else{
                     TourmateEvent tourmateEvent = new TourmateEvent(null,eventName,startPlace,
