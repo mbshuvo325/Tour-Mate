@@ -2,21 +2,27 @@ package com.example.tourmate;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.tourmate.fragment.Event_List;
 import com.example.tourmate.pojos.TourmateEvent;
+import com.example.tourmate.viewmodels.LocationViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -29,17 +35,21 @@ public class MainActivity extends AppCompatActivity
     private NavController navController;
     private boolean isExit = false;
     private boolean isBack = false;
+    private LocationViewModel locationViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+       // iSlocationPermissionGranted();
         tourmateEvent = new TourmateEvent();
 
         eventID = tourmateEvent.getEventId();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
 
        final BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(NavListener);
@@ -133,10 +143,6 @@ public class MainActivity extends AppCompatActivity
 
         return true;
     }
-    ///
-
-
-    ///
 
     private BottomNavigationView.OnNavigationItemSelectedListener NavListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -158,4 +164,25 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
     };
+
+
+    /*@RequiresApi(api = Build.VERSION_CODES.M)
+    private boolean iSlocationPermissionGranted(){
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED){
+
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},111);
+            return false;
+
+        }
+        return true ;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 111 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+
+            locationViewModel.getDeviceCurrentLocation();
+        }
+    }*/
 }
