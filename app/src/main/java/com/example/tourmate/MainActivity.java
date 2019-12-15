@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // iSlocationPermissionGranted();
+       /// iSlocationPermissionGranted();
         tourmateEvent = new TourmateEvent();
 
         eventID = tourmateEvent.getEventId();
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity
     };
 
 
-    /*@RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean iSlocationPermissionGranted(){
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED){
@@ -184,5 +184,5 @@ public class MainActivity extends AppCompatActivity
 
             locationViewModel.getDeviceCurrentLocation();
         }
-    }*/
+    }
 }

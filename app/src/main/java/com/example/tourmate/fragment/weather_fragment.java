@@ -15,12 +15,17 @@ import androidx.lifecycle.ViewModelProviders;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tourmate.MainActivity;
 import com.example.tourmate.R;
+import com.example.tourmate.currentWeather.CurrentWeatherResponsebody;
+import com.example.tourmate.helper.EventUtils;
 import com.example.tourmate.viewmodels.LocationViewModel;
+import com.example.tourmate.viewmodels.WeatherViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,9 +36,10 @@ import java.util.List;
  */
 public class weather_fragment extends Fragment {
     private LocationViewModel locationViewModel;
-
-    private TextView latlong,addressTV;
-
+    private WeatherViewModel weatherViewModel;
+    private String unit = "metric";
+    private TextView addressTV;
+    private ImageView latlong;
     public weather_fragment() {
         // Required empty public constructor
     }
@@ -44,6 +50,7 @@ public class weather_fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         locationViewModel = ViewModelProviders.of(getActivity()).get(LocationViewModel.class);
+        weatherViewModel = ViewModelProviders.of(getActivity()).get(WeatherViewModel.class);
         locationViewModel.getDeviceCurrentLocation();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_weather_fragment, container, false);
@@ -52,7 +59,7 @@ public class weather_fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        latlong = view.findViewById(R.id.latlong);
+        latlong = view.findViewById(R.id.weather_icon);
         addressTV = view.findViewById(R.id.streetAddress);
         locationViewModel.locationLD.observe(this, new Observer<Location>() {
             @Override
@@ -60,17 +67,34 @@ public class weather_fragment extends Fragment {
 
                 Double Latitude = location.getLatitude();
                 Double Longitude = location.getLongitude();
-                Toast.makeText(getActivity(), ""+Latitude+Longitude, Toast.LENGTH_SHORT).show();
-                latlong.setText(String.valueOf(Latitude)+""+String.valueOf(Longitude));
 
-                try {
+                initilizeCurrentWeather(location);
+                /*try {
                     convertLatLongToStreetAddress(location);
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                }*/
 
             }
         });
+
+    }
+
+    private void initilizeCurrentWeather(Location location) {
+        String APiKey = getString(R.string.weather_APi_key1);
+        weatherViewModel.getCurrentWeather(location,unit,APiKey)
+                .observe(this, new Observer<CurrentWeatherResponsebody>() {
+            @Override
+            public void onChanged(CurrentWeatherResponsebody responsebody) {
+                double temp = responsebody.getMain().getTemp();
+               // int date = responsebody.getDt();
+                String city = responsebody.getName();
+                String icon = responsebody.getWeather().get(0).getIcon();
+                Picasso.get().load(EventUtils.WEATHER_CONDITION_ICON_PREFIX+icon+".png").into(latlong);
+                addressTV.setText(""+temp+"\n"+city);
+            }
+        });
+        //weatherViewModel.getCurrentWeather(location,unit,APiKey);
     }
 
     private void convertLatLongToStreetAddress(Location location) throws IOException {
