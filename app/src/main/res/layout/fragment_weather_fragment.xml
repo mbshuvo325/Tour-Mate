@@ -1,30 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        tools:context=".fragment.weather_fragment">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/weather"
+    android:orientation="vertical"
+    tools:context=".fragment.weather_fragment">
 
         <!-- TODO: Update blank fragment layout -->
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/weather_icon"
-            android:gravity="center"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/streetAddress"
-            android:textSize="25sp"
-            android:text="@string/hello_blank_fragment" />
+            android:id="@+id/location_name"
+            android:layout_marginTop="70dp"
+            android:layout_marginLeft="30dp"
+            android:textSize="30sp"
+            android:padding="6dp"
+            android:textStyle="bold"
+            android:text="Dhaka" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/location_date"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="6dp"
+            android:layout_marginLeft="30dp"
+            android:text="15/12/2019" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/location_description"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:padding="6dp"
+            android:layout_marginLeft="30dp"
+            android:text="Sunny" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/location_tempLow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:text="28.00 C"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/ic_to_24dp"
+                android:padding="6dp"/>
+            <TextView
+                android:id="@+id/location_tempHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:padding="6dp"
+                android:text="28.00 C"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:padding="6dp"
+                android:layout_marginLeft="30dp"
+                android:text="Humidity" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:padding="6dp"
+                android:background="@drawable/ic_to_24dp"
+                android:layout_marginLeft="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/location_humidity"
+                android:textSize="20sp"
+                android:padding="6dp"
+                android:layout_marginLeft="5dp"
+                android:text="Humidity" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:padding="6dp"
+                android:layout_marginLeft="30dp"
+                android:text="Preasure" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:padding="6dp"
+                android:background="@drawable/ic_to_24dp"
+                android:layout_marginLeft="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/location_preasure"
+                android:textSize="20sp"
+                android:padding="6dp"
+                android:layout_marginLeft="5dp"
+                android:text="preasure" />
+
+        </LinearLayout>
 
     </LinearLayout>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="250dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/button_expand"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_arrow_up_24dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Next 7 day weather"
+                android:textColor="#000"
+                android:textSize="25sp" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/forcatRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.tourmate.currentWeather.CurrentWeatherResponsebody;
+import com.example.tourmate.forcastweather.ForcastWeatherResponseBody;
 import com.example.tourmate.repos.weather_Repository;
 
 public class WeatherViewModel extends ViewModel {
@@ -17,5 +18,9 @@ public class WeatherViewModel extends ViewModel {
 
     public MutableLiveData<CurrentWeatherResponsebody> getCurrentWeather(Location location,String unit,String APiKey){
         return weatherRepository.getCurrentWeather(location,unit,APiKey);
+    }
+
+    public MutableLiveData<ForcastWeatherResponseBody> getForcastWeather(Location location,String unit,String Apikey){
+        return weatherRepository.getForcastWeathe(location,unit,Apikey);
     }
 }

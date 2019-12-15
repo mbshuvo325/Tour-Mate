@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +23,19 @@ import android.widget.Toast;
 
 import com.example.tourmate.MainActivity;
 import com.example.tourmate.R;
+import com.example.tourmate.adapter.WeatherAdapter;
 import com.example.tourmate.currentWeather.CurrentWeatherResponsebody;
+import com.example.tourmate.forcastweather.ForcastList;
+import com.example.tourmate.forcastweather.ForcastWeatherResponseBody;
 import com.example.tourmate.helper.EventUtils;
 import com.example.tourmate.viewmodels.LocationViewModel;
 import com.example.tourmate.viewmodels.WeatherViewModel;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.PrimitiveIterator;
 
 
 /**
@@ -38,8 +45,11 @@ public class weather_fragment extends Fragment {
     private LocationViewModel locationViewModel;
     private WeatherViewModel weatherViewModel;
     private String unit = "metric";
-    private TextView addressTV;
-    private ImageView latlong;
+    private TextView cityname,description,locdate,templow,temphigh,humidity,preasure;
+    private RecyclerView forcastRV;
+    private BottomSheetBehavior mBottomSheetBehavior;
+    private Location currentlocation;
+    private ImageView weatherIcon;
     public weather_fragment() {
         // Required empty public constructor
     }
@@ -59,8 +69,37 @@ public class weather_fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        latlong = view.findViewById(R.id.weather_icon);
-        addressTV = view.findViewById(R.id.streetAddress);
+        cityname = view.findViewById(R.id.location_name);
+        locdate = view.findViewById(R.id.location_date);
+        description = view.findViewById(R.id.location_description);
+        templow = view.findViewById(R.id.location_tempLow);
+        temphigh = view.findViewById(R.id.location_tempHigh);
+        humidity = view.findViewById(R.id.location_humidity);
+        preasure = view.findViewById(R.id.location_preasure);
+        forcastRV = view.findViewById(R.id.forcatRV);
+
+        View bottomSheet = view.findViewById(R.id.bottom_sheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        final ImageView buttonExpand = view.findViewById(R.id.button_expand);
+
+        buttonExpand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if ( mBottomSheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED)
+                {
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    buttonExpand.setImageResource(R.drawable.ic_arrow_up_24dp);
+
+                }
+                else
+                {
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    buttonExpand.setImageResource(R.drawable.ic_arrow_down_24dp);
+                }
+
+            }
+        });
+
         locationViewModel.locationLD.observe(this, new Observer<Location>() {
             @Override
             public void onChanged(Location location) {
@@ -69,6 +108,7 @@ public class weather_fragment extends Fragment {
                 Double Longitude = location.getLongitude();
 
                 initilizeCurrentWeather(location);
+                initilizeForcastWeather(location);
                 /*try {
                     convertLatLongToStreetAddress(location);
                 } catch (IOException e) {
@@ -80,6 +120,23 @@ public class weather_fragment extends Fragment {
 
     }
 
+    private void initilizeForcastWeather(Location location) {
+
+        String Apikey = getString(R.string.weather_APi_key1);
+        weatherViewModel.getForcastWeather(location,unit,Apikey)
+                .observe(this, new Observer<ForcastWeatherResponseBody>() {
+                    @Override
+                    public void onChanged(ForcastWeatherResponseBody response) {
+                        List<ForcastList> forecastLists = response.getList();
+
+                        WeatherAdapter forcastRVAdapter = new WeatherAdapter(getActivity(), forecastLists,unit);
+                        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+                        forcastRV.setLayoutManager(llm);
+                        forcastRV.setAdapter(forcastRVAdapter);
+                    }
+                });
+    }
+
     private void initilizeCurrentWeather(Location location) {
         String APiKey = getString(R.string.weather_APi_key1);
         weatherViewModel.getCurrentWeather(location,unit,APiKey)
@@ -87,11 +144,18 @@ public class weather_fragment extends Fragment {
             @Override
             public void onChanged(CurrentWeatherResponsebody responsebody) {
                 double temp = responsebody.getMain().getTemp();
-               // int date = responsebody.getDt();
                 String city = responsebody.getName();
-                String icon = responsebody.getWeather().get(0).getIcon();
-                Picasso.get().load(EventUtils.WEATHER_CONDITION_ICON_PREFIX+icon+".png").into(latlong);
-                addressTV.setText(""+temp+"\n"+city);
+                String date = EventUtils.getFormattedDate(responsebody.getDt());
+                int hudmmidity = responsebody.getMain().getHumidity();
+                int pressurev = responsebody.getMain().getPressure();
+                String weatherStat = responsebody.getWeather().get(0).getDescription();
+
+                cityname.setText(city);
+                locdate.setText(date);
+                description.setText(weatherStat);
+                templow.setText((Math.round((temp)))+"");
+                humidity.setText((hudmmidity)+""+"%");
+                preasure.setText((pressurev)+""+"hpa");
             }
         });
         //weatherViewModel.getCurrentWeather(location,unit,APiKey);
@@ -102,7 +166,7 @@ public class weather_fragment extends Fragment {
         List<Address> addressList = geocoder.getFromLocation(location.getLatitude(),
                 location.getLongitude(),1);
         String address = addressList.get(0).getAddressLine(0);
-        addressTV.setText(address);
+        cityname.setText(address);
 
     }
 
