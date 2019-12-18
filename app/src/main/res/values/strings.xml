@@ -7,4 +7,6 @@
     <string name="navigation_drawer_open">Open Navigation drawer</string>
     <string name="navigation_drawer_close">Colse Navigation drawer</string>
     <string name="weather_APi_key1">a6960688653fa8be6d09670624e3d29e</string>
+    <string name="nearby_APi_key1">AIzaSyBpevtodnF8ugHMzsaDX4DqklR-r4y4AfE</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

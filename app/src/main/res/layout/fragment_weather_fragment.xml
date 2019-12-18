@@ -20,8 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/location_name"
-            android:layout_marginTop="70dp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="25dp"
             android:textSize="30sp"
             android:padding="6dp"
             android:textStyle="bold"
@@ -58,21 +58,6 @@
                 android:id="@+id/location_tempLow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="6dp"
-                android:text="28.00 C"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/ic_to_24dp"
-                android:padding="6dp"/>
-            <TextView
-                android:id="@+id/location_tempHigh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:padding="6dp"
                 android:text="28.00 C"
                 android:textSize="30sp"

@@ -45,7 +45,7 @@ public class weather_fragment extends Fragment {
     private LocationViewModel locationViewModel;
     private WeatherViewModel weatherViewModel;
     private String unit = "metric";
-    private TextView cityname,description,locdate,templow,temphigh,humidity,preasure;
+    private TextView cityname,description,locdate,templow,humidity,preasure;
     private RecyclerView forcastRV;
     private BottomSheetBehavior mBottomSheetBehavior;
     private Location currentlocation;
@@ -73,7 +73,6 @@ public class weather_fragment extends Fragment {
         locdate = view.findViewById(R.id.location_date);
         description = view.findViewById(R.id.location_description);
         templow = view.findViewById(R.id.location_tempLow);
-        temphigh = view.findViewById(R.id.location_tempHigh);
         humidity = view.findViewById(R.id.location_humidity);
         preasure = view.findViewById(R.id.location_preasure);
         forcastRV = view.findViewById(R.id.forcatRV);
@@ -153,7 +152,7 @@ public class weather_fragment extends Fragment {
                 cityname.setText(city);
                 locdate.setText(date);
                 description.setText(weatherStat);
-                templow.setText((Math.round((temp)))+"");
+                templow.setText((Math.round((temp)))+""+EventUtils.DEGREE+EventUtils.UNIT_CELCIUS_SYMBOL);
                 humidity.setText((hudmmidity)+""+"%");
                 preasure.setText((pressurev)+""+"hpa");
             }
