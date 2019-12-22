@@ -11,6 +11,7 @@ import java.util.List;
 public class ExpenseViewModel extends ViewModel {
     private ExpenseRepository repository;
     public MutableLiveData<List<EventExpense>> expenseLD = new MutableLiveData<>();
+    public MutableLiveData<EventExpense> expenseDetailsLD = new MutableLiveData<>();
 
     public ExpenseViewModel() {
         repository = new ExpenseRepository();
@@ -26,4 +27,9 @@ public class ExpenseViewModel extends ViewModel {
     public void DeleteExpense(EventExpense expense){
         repository.deleteExpenseFromDB(expense);
     }
+
+    public void UpdateExpense(EventExpense expense){
+        repository.UpdateExpenseToDB(expense);
+    }
+
 }

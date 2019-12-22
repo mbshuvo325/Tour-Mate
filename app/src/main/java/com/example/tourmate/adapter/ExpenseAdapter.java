@@ -7,15 +7,20 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tourmate.R;
+import com.example.tourmate.helper.EventUtils;
 import com.example.tourmate.pojos.EventExpense;
+import com.example.tourmate.pojos.TourmateEvent;
 import com.example.tourmate.viewmodels.ExpenseViewModel;
 
 import java.util.List;
@@ -24,6 +29,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     private Context context;
     private List<EventExpense> expenseList;
     private ExpenseViewModel expenseViewModel = new ExpenseViewModel();
+    ///private TourmateEvent event = new TourmateEvent();
 
     public ExpenseAdapter(Context context, List<EventExpense> expenseList) {
         this.context = context;
@@ -54,9 +60,56 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
+                        String expenseID = expense.getExpenseID();
                         switch (menuItem.getItemId()){
                             case R.id.expenseEdit:
+                                final AlertDialog.Builder ebuilder = new AlertDialog.Builder(context);
+                                LayoutInflater inflater = LayoutInflater.from(context);
+                                View dialogview = inflater.inflate(R.layout.add_expense_dialog,null);
+                                ebuilder.setTitle("Update Expense");
+                                ebuilder.setIcon(R.drawable.ic_add_expense_24dp);
 
+                                final EditText expenseName = dialogview.findViewById(R.id.expense_name);
+                                final EditText expenseAmount = dialogview.findViewById(R.id.expense_Amount);
+                                final Button saveExpense = dialogview.findViewById(R.id.save_expense);
+                                final Button Cancel = dialogview.findViewById(R.id.cancel_dialog);
+                                expenseName.setText(expense.getExpenseName());
+                                expenseAmount.setText(String.valueOf(expense.getExpenseAmount()));
+                                ebuilder.setView(dialogview);
+                                final AlertDialog dialog = ebuilder.create();
+                                dialog.show();
+
+                                saveExpense.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        String name = expenseName.getText().toString();
+                                        String Amount = expenseAmount.getText().toString();
+                                        if (name.isEmpty()){
+                                            expenseName.setError("Expense Name Should Not Empty!");
+                                        }
+                                        else if (Amount.isEmpty()){
+                                            expenseAmount.setError("Amount Should Not Empty!");
+                                        }
+                                        else {
+
+                                            String eventId = expense.getEventID();
+                                            String expenseId = expense.getExpenseID();
+                                            EventExpense expense = new EventExpense(expenseId,eventId,name,Double.valueOf(Amount),
+                                                    EventUtils.getCurrentDate());
+                                            expenseViewModel.UpdateExpense(expense);
+                                            dialog.dismiss();
+                                        }
+                                    }
+                                });
+
+                                Cancel.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                ////
                                 break;
                             case R.id.expenseDelete:
                                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -79,8 +132,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
                                         dialog.dismiss();
                                     }
                                 });
-                                final AlertDialog dialog = builder.create();
-                                dialog.show();
+                                final AlertDialog adialog = builder.create();
+                                adialog.show();
 
                                 break;
                         }

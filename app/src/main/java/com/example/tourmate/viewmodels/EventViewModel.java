@@ -12,6 +12,7 @@ public class EventViewModel extends ViewModel {
 
     private DB_Repositiry db_repositiry;
     public MutableLiveData<List<TourmateEvent>> eventListLD;
+    public MutableLiveData<TourmateEvent> eventDetilsLD = new MutableLiveData<>();
 
     public EventViewModel() {
         db_repositiry = new DB_Repositiry();
@@ -22,5 +23,11 @@ public class EventViewModel extends ViewModel {
     }
     public void DeleteEvent(TourmateEvent event){
         db_repositiry.deleteEventFromDB(event);
+    }
+    public void UpdateEvent(TourmateEvent event){
+        db_repositiry.UpdateEventToDB(event);
+    }
+    public void getEventDetails(String eventID){
+         eventDetilsLD = db_repositiry.getEventByEventID(eventID);
     }
 }

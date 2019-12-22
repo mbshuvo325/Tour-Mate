@@ -25,6 +25,7 @@ public class ExpenseRepository {
     private DatabaseReference expenseRef;
     private FirebaseUser firebaseUser;
     public MutableLiveData<List<EventExpense>> expenseLD = new MutableLiveData<>();
+    public MutableLiveData<EventExpense> expenseDetailsLD = new MutableLiveData<>();
 
     public ExpenseRepository(){
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -61,8 +62,15 @@ public class ExpenseRepository {
         return expenseLD;
     }
 
+    public void UpdateExpenseToDB(EventExpense expense){
+        String expenseID = expense.getExpenseID();
+        expense.setExpenseID(expenseID);
+        expenseRef.child(expense.getEventID()).child(expenseID).setValue(expense);
+    }
+
     public void deleteExpenseFromDB(EventExpense expensepojo){
         final String expenseID = expensepojo.getExpenseID();
         expenseRef.child(expensepojo.getEventID()).child(expenseID).removeValue();
     }
+
 }

@@ -23,10 +23,12 @@ public class DB_Repositiry {
     private DatabaseReference userRef;
     private DatabaseReference eventRef;
     public MutableLiveData<List<TourmateEvent>> eventListLD;
+    public MutableLiveData<TourmateEvent> eventDetilsLD;
 
     public DB_Repositiry(){
 
         eventListLD = new MutableLiveData<>();
+        eventDetilsLD = new MutableLiveData<>();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         rootRef = FirebaseDatabase.getInstance().getReference();
         userRef = rootRef.child(firebaseUser.getUid());
@@ -77,4 +79,36 @@ public class DB_Repositiry {
         });
     }
 
+    public void UpdateEventToDB(TourmateEvent eventpojo){
+
+        String eventId = eventpojo.getEventId();
+        eventpojo.setEventId(eventId);
+        eventRef.child(eventId).setValue(eventpojo).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
+    public MutableLiveData<TourmateEvent> getEventByEventID(String eventID){
+        eventRef.child(eventID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                TourmateEvent eventpojo = dataSnapshot.getValue(TourmateEvent.class);
+                eventDetilsLD.postValue(eventpojo);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return eventDetilsLD;
+    }
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tourmate.MainActivity;
+import com.example.tourmate.MapsActivity;
 import com.example.tourmate.R;
 import com.example.tourmate.fragment.event_details_fragment;
 import com.example.tourmate.pojos.EventExpense;
@@ -25,6 +28,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewHolder> {
 
@@ -103,7 +108,10 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
                                 dialog.show();
                                 break;
                             case R.id.edit:
-
+                              final String eventid = eventList.get(position).getEventId();
+                                Bundle bundle1 = new Bundle();
+                                bundle1.putString("id",eventid);
+                                Navigation.findNavController(holder.itemView).navigate(R.id.add_event_fragment,bundle1);
                                 break;
                             case R.id.delete:
                                 final AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
