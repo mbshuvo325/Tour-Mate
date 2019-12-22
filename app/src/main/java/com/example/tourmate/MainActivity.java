@@ -250,6 +250,7 @@ public class MainActivity extends AppCompatActivity
           //  Log.e(TAG, "onActivityResult: "+currentPhotoPath);
             File file = new File(currentPhotoPath);
             //eventViewModel.uploadImageToFirebaseStorage(file, eventId);
+
         }
     }
 }
