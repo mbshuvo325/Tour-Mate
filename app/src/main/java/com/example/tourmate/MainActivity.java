@@ -172,7 +172,9 @@ public class MainActivity extends AppCompatActivity
                             .navigate(R.id.event_List);
                     break;
                 case R.id.bottom_camera:
-                    dispatchCameraIntent();
+                    Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment)
+                            .navigate(R.id.gallery_fragment,bundle);
+                   // dispatchCameraIntent();
                     break;
 
                 case R.id.bottom_search:
