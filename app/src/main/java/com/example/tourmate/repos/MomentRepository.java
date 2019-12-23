@@ -8,10 +8,12 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.tourmate.pojos.Moment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -29,12 +31,11 @@ public class MomentRepository {
     private String DOWNLOAD_DIR = Environment.getExternalStoragePublicDirectory
             (Environment.DIRECTORY_DOWNLOADS).getPath();
 
-    public MomentRepository(FirebaseUser firebaseUser, DatabaseReference rootRef,
-                            DatabaseReference userRef, DatabaseReference momentsRef) {
-        this.firebaseUser = firebaseUser;
-        this.rootRef = rootRef;
-        this.userRef = userRef;
-        this.momentsRef = momentsRef;
+    public MomentRepository() {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        userRef = rootRef.child(firebaseUser.getUid());
+        momentsRef = userRef.child("Moment");
     }
     public void addNewMoment(Moment moment){
         String momentID = momentsRef.push().getKey();
@@ -60,7 +61,6 @@ public class MomentRepository {
         });
         return momentLD;
     }
-
     public void deleteImageFromBD(Moment moment){
         String momentID = moment.getMomentID();
         momentsRef.child(moment.getEventID())

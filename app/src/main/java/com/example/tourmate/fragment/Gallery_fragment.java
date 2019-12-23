@@ -10,17 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tourmate.R;
+import com.example.tourmate.adapter.EveentAdapter;
 import com.example.tourmate.adapter.MomentAdapter;
+import com.example.tourmate.pojos.Moment;
 import com.example.tourmate.viewmodels.MomentViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -28,6 +33,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 /**
@@ -40,7 +48,7 @@ public class Gallery_fragment extends Fragment {
     private static final int GALLERY_REQUEST_CODE = 143;
     private String currentPhotoPath;
     private FloatingActionButton takepic;
-    private MomentViewModel momentViewModel;
+    public MomentViewModel momentViewModel;
     private RecyclerView momentRV;
     private MomentAdapter momentAdapter;
     private String eventId;
@@ -53,13 +61,10 @@ public class Gallery_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         momentViewModel = ViewModelProviders.of(this).get(MomentViewModel.class);
-        Bundle bundle = getArguments();
 
-        if (bundle != null)
-        {
-            eventId =    bundle.getString("id");
-            momentViewModel.getMoments(eventId);
-        }
+        Log.i(TAG, "onCreateView: "+EveentAdapter.e_ID);
+            momentViewModel.getMoments(EveentAdapter.e_ID);
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_gallery_fragment, container, false);
     }
@@ -75,6 +80,15 @@ public class Gallery_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 dispatchCameraIntent();
+            }
+        });
+
+        momentViewModel.momentsLD.observe(this, new Observer<List<Moment>>() {
+            @Override
+            public void onChanged(List<Moment> moments) {
+                momentAdapter = new MomentAdapter(getActivity(), moments);
+                GridLayoutManager glm = new GridLayoutManager(getActivity(), 2);
+                momentRV.setLayoutManager(glm);
             }
         });
     }

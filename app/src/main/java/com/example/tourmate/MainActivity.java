@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -23,8 +24,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.tourmate.R;
 import com.example.tourmate.fragment.Event_List;
@@ -41,8 +44,9 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG =MainActivity.class.getSimpleName() ;
     private DrawerLayout drawer;
-    private String eventID;
+    public  String eventID;
     private TourmateEvent tourmateEvent;
     private NavController navController;
     private boolean isExit = false;
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity
     private final int REQUEST_CAMERA_CODE = 999;
     private String currentPhotoPath;
 
+   // public MutableLiveData<TourmateEvent> eventList = new MutableLiveData<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +66,12 @@ public class MainActivity extends AppCompatActivity
        /// iSlocationPermissionGranted();
         tourmateEvent = new TourmateEvent();
 
-        eventID = tourmateEvent.getEventId();
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
+
+
+
 
        final BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(NavListener);
@@ -164,8 +171,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-            final Bundle bundle = new Bundle();
-            bundle.putString("id",eventID);
+
             switch (menuItem.getItemId()){
                 case R.id.bottom_home:
                     Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment)
@@ -173,7 +179,7 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case R.id.bottom_camera:
                     Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment)
-                            .navigate(R.id.gallery_fragment,bundle);
+                            .navigate(R.id.gallery_fragment);
                    // dispatchCameraIntent();
                     break;
 

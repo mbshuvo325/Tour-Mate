@@ -18,7 +18,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tourmate.MainActivity;
-import com.example.tourmate.MapsActivity;
 import com.example.tourmate.R;
 import com.example.tourmate.fragment.event_details_fragment;
 import com.example.tourmate.pojos.EventExpense;
@@ -37,6 +36,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
     private List<TourmateEvent> eventList;
     private List<EventExpense> eventExpenses = new ArrayList<>();
     private EventViewModel eventViewModel = new EventViewModel();
+    public static String e_ID;
 
     public EveentAdapter(Context context, List<TourmateEvent> eventList) {
         this.context = context;
@@ -59,6 +59,8 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
         holder.startDate.setText(eventList.get(position).getStartDate());
         holder.endDate.setText(eventList.get(position).getEndDate());
         final TourmateEvent event = eventList.get(position);
+
+
         holder.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,9 +71,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        String eventId = eventList.get(position).getEventId();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("id",eventId);
+
                         switch (menuItem.getItemId()){
                             case R.id.details:
                                 ///details:
@@ -148,9 +148,11 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String eventId = eventList.get(position).getEventId();
+                String eventID = eventList.get(position).getEventId();
                 Bundle bundle = new Bundle();
-                bundle.putString("id",eventId);
+                bundle.putString("id",eventID);
+
+                e_ID = eventID;
                 Navigation.findNavController(view).navigate(R.id.event_details_fragment,bundle);
 
             }

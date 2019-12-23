@@ -29,8 +29,8 @@ public class MomentViewModel extends ViewModel {
 
     private MomentRepository momentRepository;
     public MutableLiveData<List<Moment>> momentsLD = new MutableLiveData<>();
-    public MomentViewModel(MomentRepository momentRepository) {
-        this.momentRepository = momentRepository;
+    public MomentViewModel(){
+        momentRepository = new MomentRepository();
     }
 
     public void uploadImageToDB(Context context, File file, String eventID){
