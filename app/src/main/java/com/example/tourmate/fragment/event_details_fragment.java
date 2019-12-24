@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -29,10 +30,12 @@ import com.example.tourmate.R;
 import com.example.tourmate.adapter.ExpenseAdapter;
 import com.example.tourmate.helper.EventUtils;
 import com.example.tourmate.pojos.EventExpense;
+import com.example.tourmate.pojos.TourmateEvent;
 import com.example.tourmate.viewmodels.ExpenseViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -48,8 +51,7 @@ public class event_details_fragment extends Fragment {
     private FloatingActionButton addExpense;
     private String  eventId = null;
     private ExpenseViewModel expenseViewModel;
-    private TextView showTotalExpense;
-
+    private  TextView showTotalExpense;
 
     public event_details_fragment() {
         // Required empty public constructor
@@ -88,7 +90,9 @@ public class event_details_fragment extends Fragment {
                 LinearLayoutManager llm = new LinearLayoutManager(getActivity());
                 expenseRV.setLayoutManager(llm);
                 expenseRV.setAdapter(adapter);
-                Double totalExpense = 0.0;
+
+
+                 double totalExpense = 0.0;
                 for (EventExpense ex: eventExpenses){
                     totalExpense += ex.getExpenseAmount();
                 }

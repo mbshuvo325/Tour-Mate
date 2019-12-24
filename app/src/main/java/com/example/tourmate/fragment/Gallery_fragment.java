@@ -51,7 +51,7 @@ public class Gallery_fragment extends Fragment {
     public MomentViewModel momentViewModel;
     private RecyclerView momentRV;
     private MomentAdapter momentAdapter;
-    private String eventId;
+    String eventID;
 
     public Gallery_fragment() {
         // Required empty public constructor
@@ -61,9 +61,13 @@ public class Gallery_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         momentViewModel = ViewModelProviders.of(this).get(MomentViewModel.class);
-
-        Log.i(TAG, "onCreateView: "+EveentAdapter.e_ID);
-            momentViewModel.getMoments(EveentAdapter.e_ID);
+      Bundle bundle = getArguments();
+        if (bundle != null)
+        {
+            eventID = bundle.getString("eid");
+            momentViewModel.getMoments(eventID);
+        }
+           //
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_gallery_fragment, container, false);
@@ -86,9 +90,16 @@ public class Gallery_fragment extends Fragment {
         momentViewModel.momentsLD.observe(this, new Observer<List<Moment>>() {
             @Override
             public void onChanged(List<Moment> moments) {
+
+                Log.i(TAG, "onChanged: "+moments.size());
                 momentAdapter = new MomentAdapter(getActivity(), moments);
                 GridLayoutManager glm = new GridLayoutManager(getActivity(), 2);
                 momentRV.setLayoutManager(glm);
+                /*momentRV.setHasFixedSize(true);
+                momentRV.setItemViewCacheSize(20);
+                momentRV.setDrawingCacheEnabled(true);
+                momentRV.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
+                momentRV.setAdapter(momentAdapter);
             }
         });
     }
@@ -107,6 +118,7 @@ public class Gallery_fragment extends Fragment {
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
+        Log.e(TAG, "onActivityResult: "+currentPhotoPath);
         return image;
     }
 
@@ -136,10 +148,9 @@ public class Gallery_fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CAMERA_CODE &&
                 resultCode == Activity.RESULT_OK){
-            //  Log.e(TAG, "onActivityResult: "+currentPhotoPath);
+            Log.e(TAG, "onActivityResult: "+currentPhotoPath);
             File file = new File(currentPhotoPath);
-            //eventViewModel.uploadImageToFirebaseStorage(file, eventId);
-            momentViewModel.uploadImageToDB(getActivity(),file,eventId);
+            momentViewModel.uploadImageToDB(getActivity(),file,eventID);
 
         }
     }

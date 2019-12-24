@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.tourmate.R;
@@ -70,10 +68,11 @@ public class Login_Fragment extends Fragment {
         registerbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = usernameET.getText().toString();
+                /*String email = usernameET.getText().toString();
                 String password = passwordET.getText().toString();
-                loginViewModel.registeruser(email,password);
-               /// Navigation.findNavController(view).navigate(R.id.register_Fragment);
+                UserProfileINFO userInfo = new UserProfileINFO(null,name,email,password);
+                loginViewModel.registeruser(userInfo);*/
+                Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.regestration_fragment);
             }
         });
         loginViewModel.stateLiveData.observe(this, new Observer<LoginViewModel.AuthenticationState>() {
@@ -84,7 +83,7 @@ public class Login_Fragment extends Fragment {
                         Navigation.findNavController(view).navigate(R.id.action_login_Fragment_to_event_List);
                        break;
                    case UNAUTHENTICATED:
-                       statusTv.setText("Login Unsuccessful Try Again");
+                       statusTv.setText("Login With Valid Email & Password");
                        break;
                }
             }

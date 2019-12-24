@@ -36,12 +36,12 @@ public class MomentViewModel extends ViewModel {
     public void uploadImageToDB(Context context, File file, String eventID){
 
         final ProgressDialog pd = new ProgressDialog(context);
-        pd.setMessage("Wait Image Uploading...");
+        pd.setMessage("Wait Until Image Uploading...");
         pd.show();
 
         StorageReference rootRef = FirebaseStorage.getInstance().getReference();
         Uri fileUri = Uri.fromFile(file);
-        final StorageReference imageRef = rootRef.child("images/"+file.getAbsolutePath());
+        final StorageReference imageRef = rootRef.child("images/"+fileUri.getLastPathSegment());
 
         //imageCompress
         Bitmap bmp = null;
@@ -73,7 +73,7 @@ public class MomentViewModel extends ViewModel {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(context, "Uploaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Uploaded Successful", Toast.LENGTH_SHORT).show();
                     pd.dismiss();
                     Uri downloadUri = task.getResult();
                     Moment moments = new Moment(null,eventID,downloadUri.toString());

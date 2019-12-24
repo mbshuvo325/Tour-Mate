@@ -30,4 +30,8 @@ public class EventViewModel extends ViewModel {
     public void getEventDetails(String eventID){
          eventDetilsLD = db_repositiry.getEventByEventID(eventID);
     }
+    public void addMoreBudget(String eventID,double amount){
+
+        db_repositiry.addMoreBudgetToDB(eventID,amount);
+    }
 }

@@ -9,4 +9,15 @@
     <string name="weather_APi_key1">a6960688653fa8be6d09670624e3d29e</string>
     <string name="nearby_APi_key1">AIzaSyBpevtodnF8ugHMzsaDX4DqklR-r4y4AfE</string>
     <string name="title_activity_maps">Map</string>
+
+    <string-array name="place_type">
+        <item>Select Place</item>
+        <item>restaurant</item>
+        <item>atm</item>
+        <item>bus_station</item>
+        <item>tourist_attraction</item>
+        <item>train_station</item>
+        <item>zoo</item>
+    </string-array>
+
 </resources>

@@ -4,19 +4,28 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.tourmate.MainActivity;
+import com.example.tourmate.pojos.UserProfileINFO;
 import com.example.tourmate.viewmodels.LoginViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginRepository {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
+    DatabaseReference rootRef;
+    DatabaseReference  userRef;
+    DatabaseReference userInfo;
     private MutableLiveData<LoginViewModel.AuthenticationState> stateLiveData;
     private MutableLiveData<String> errormessage = new MutableLiveData<>();
+    public MutableLiveData<UserProfileINFO> userInfoLD = new MutableLiveData<>();
 
     public LoginRepository(MutableLiveData<LoginViewModel.AuthenticationState> stateLiveData){
         firebaseAuth = FirebaseAuth.getInstance();
@@ -47,14 +56,26 @@ public class LoginRepository {
 
     ///register user
 
-    public MutableLiveData<LoginViewModel.AuthenticationState> registerFirebaseUser(String email, String password){
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    public MutableLiveData<LoginViewModel.AuthenticationState> registerFirebaseUser(UserProfileINFO userReg){
+        firebaseAuth.createUserWithEmailAndPassword(userReg.getUserEmail(),userReg.getUserPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()){
                     firebaseUser = firebaseAuth.getCurrentUser();
                     stateLiveData.postValue(LoginViewModel.AuthenticationState.AUTHENTICATED);
+                    rootRef = FirebaseDatabase.getInstance().getReference();
+                    userRef = rootRef.child(firebaseUser.getUid());
+                    userInfo.child("userInfo");
+                    String userId = firebaseUser.getUid();
+                    userReg.setUesrID(userId);
+                    userInfo.setValue(userReg).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                        }
+                    });
+
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -67,7 +88,6 @@ public class LoginRepository {
         });
         return stateLiveData;
     }
-
     ///register user End
 
 

@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +39,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
     private List<EventExpense> eventExpenses = new ArrayList<>();
     private EventViewModel eventViewModel = new EventViewModel();
     public static String e_ID;
+    private double totalbudget;
 
     public EveentAdapter(Context context, List<TourmateEvent> eventList) {
         this.context = context;
@@ -81,11 +84,6 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
                                 builder.setTitle("Event Details");
                                 builder.setIcon(R.drawable.ic_details_24dp);
 
-                                Double totalExpense = 0.0;
-                                for (EventExpense ex: eventExpenses){
-                                    totalExpense += ex.getExpenseAmount();
-                                }
-
                                 final TextView showName = view.findViewById(R.id.event_name);
                                 final TextView showStartPlace = view.findViewById(R.id.start_place);
                                 final TextView showEndPlace = view.findViewById(R.id.end_place);
@@ -100,12 +98,50 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
                                 showStartDate.setText(eventList.get(position).getStartDate());
                                 showEndDate.setText(eventList.get(position).getEndDate());
                                 showBudget.setText(String.valueOf(eventList.get(position).getEventbudget()));
-                                showexpense.setText(String.valueOf(totalExpense));
+                                //showexpense.setText(String.valueOf(expense));
 
                                 builder.setPositiveButton("Ok",null);
                                 builder.setView(view);
                                 final AlertDialog dialog = builder.create();
                                 dialog.show();
+                                break;
+                            case R.id.moreBuget:
+                                 final AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
+                                 builder2.setTitle("Add More Budget");
+                                 builder2.setIcon(R.drawable.ic_money_24dp);
+                                 LayoutInflater inflater1 = LayoutInflater.from(context);
+                                 View view1 = inflater1.inflate(R.layout.morebudget_dialog, null);
+                                 builder2.setView(view1);
+                                 final EditText addAmount = view1.findViewById(R.id.moreBuget_Amount);
+                                 final Button Addbudget = view1.findViewById(R.id.budgetsave);
+                                 final Button cancel = view1.findViewById(R.id.budgetcancel_dialog);
+
+                                 final AlertDialog dialog1 = builder2.create();
+                                 dialog1.show();
+
+                                 totalbudget = event.getEventbudget();
+                                 String eventID = eventList.get(position).getEventId();
+
+                                Addbudget.setOnClickListener(new View.OnClickListener() {
+                                     @Override
+                                     public void onClick(View view) {
+                                         String Amount = addAmount.getText().toString();
+                                         if (Amount.isEmpty()){
+                                             addAmount.setError("Amount Should not Empty...!");
+                                         }
+                                         double currentBudget = totalbudget + Double.valueOf(Amount);
+                                         eventViewModel.addMoreBudget(eventID,currentBudget);
+                                         Toast.makeText(context, "Budget Add Successfully", Toast.LENGTH_SHORT).show();
+                                         dialog1.dismiss();
+                                     }
+                                 });
+                                 cancel.setOnClickListener(new View.OnClickListener() {
+                                     @Override
+                                     public void onClick(View view) {
+                                         dialog1.dismiss();
+                                     }
+                                 });
+
                                 break;
                             case R.id.edit:
                               final String eventid = eventList.get(position).getEventId();
@@ -134,8 +170,8 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
                                         dialog.dismiss();
                                     }
                                 });
-                                final AlertDialog dialog1 = builder1.create();
-                                dialog1.show();
+                                final AlertDialog dialogb = builder1.create();
+                                dialogb.show();
                                 break;
                         }
 
@@ -152,7 +188,7 @@ public class EveentAdapter extends RecyclerView.Adapter<EveentAdapter.EventViewH
                 Bundle bundle = new Bundle();
                 bundle.putString("id",eventID);
 
-                e_ID = eventID;
+                MainActivity.eventID = eventID;
                 Navigation.findNavController(view).navigate(R.id.event_details_fragment,bundle);
 
             }

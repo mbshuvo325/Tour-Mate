@@ -111,4 +111,13 @@ public class DB_Repositiry {
         });
         return eventDetilsLD;
     }
+
+    public void addMoreBudgetToDB(String eventID,double amount){
+        eventRef.child(eventID).child("eventbudget").setValue(amount).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        });
+    }
 }

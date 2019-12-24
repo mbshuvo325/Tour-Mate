@@ -33,6 +33,7 @@ import com.example.tourmate.R;
 import com.example.tourmate.fragment.Event_List;
 import com.example.tourmate.pojos.TourmateEvent;
 import com.example.tourmate.viewmodels.LocationViewModel;
+import com.example.tourmate.viewmodels.LoginViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -44,44 +45,42 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG =MainActivity.class.getSimpleName() ;
+    private static final String TAG = MainActivity.class.getSimpleName();
     private DrawerLayout drawer;
-    public  String eventID;
+    public static String eventID;
     private TourmateEvent tourmateEvent;
     private NavController navController;
     private boolean isExit = false;
     private boolean isBack = false;
     private LocationViewModel locationViewModel;
-    private final int REQUEST_STORAGE_CODE = 456;
-    private final int REQUEST_CAMERA_CODE = 999;
-    private String currentPhotoPath;
+    private LoginViewModel loginViewModel;
 
-   // public MutableLiveData<TourmateEvent> eventList = new MutableLiveData<>();
+
+    // public MutableLiveData<TourmateEvent> eventList = new MutableLiveData<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       /// iSlocationPermissionGranted();
+        /// iSlocationPermissionGranted();
         tourmateEvent = new TourmateEvent();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
 
-
-
-       final BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        final BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(NavListener);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
-                R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         ///
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity
                         break;
 
                     case R.id.event_details_fragment:
-                       /// bottomNav.getMenu().findItem(R.id.event_details_fragment).setChecked(true);
+                        /// bottomNav.getMenu().findItem(R.id.event_details_fragment).setChecked(true);
                         bottomNav.setVisibility(View.VISIBLE);
                         isBack = true;
                         isExit = false;
@@ -126,39 +125,41 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
 
             case R.id.nav_home:
-               Navigation.findNavController(this,R.id.nav_host_fragment).navigate(R.id.event_List);
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.event_List);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
 
             case R.id.nav_profile:
-                Navigation.findNavController(this,R.id.nav_host_fragment).navigate(R.id.profile_fragment);
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.profile_fragment);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
 
             case R.id.nav_weather:
-                Navigation.findNavController(this,R.id.nav_host_fragment).navigate(R.id.weather_fragment);
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.weather_fragment);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
 
             case R.id.nav_location:
-                Navigation.findNavController(this,R.id.nav_host_fragment).navigate(R.id.location_fragment);
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.location_fragment);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
 
             case R.id.nav_Compas:
-                Navigation.findNavController(this,R.id.nav_host_fragment).navigate(R.id.compas_fragment);
+                loginViewModel.getLogoutUser();
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+                        .navigate(R.id.login_Fragment);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
         }
@@ -168,97 +169,30 @@ public class MainActivity extends AppCompatActivity
 
     private BottomNavigationView.OnNavigationItemSelectedListener NavListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("eid",eventID);
+
+                    switch (menuItem.getItemId()) {
+                        case R.id.bottom_home:
+                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
+                                    .navigate(R.id.event_List);
+                            break;
+                        case R.id.bottom_camera:
+                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
+                                    .navigate(R.id.gallery_fragment,bundle);
+                            // dispatchCameraIntent();
+                            break;
+
+                        case R.id.bottom_search:
+                            break;
+                    }
+                    return true;
+                }
+            };
 
 
-            switch (menuItem.getItemId()){
-                case R.id.bottom_home:
-                    Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment)
-                            .navigate(R.id.event_List);
-                    break;
-                case R.id.bottom_camera:
-                    Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment)
-                            .navigate(R.id.gallery_fragment);
-                   // dispatchCameraIntent();
-                    break;
 
-                case R.id.bottom_search:
-                    break;
-            }
-            return true;
-        }
-    };
-
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private boolean iSlocationPermissionGranted(){
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED){
-
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},111);
-            return false;
-
-        }
-        return true ;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 111 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-
-            locationViewModel.getDeviceCurrentLocation();
-        }
-    }
-
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-       File storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-
-    private void dispatchCameraIntent(){
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(this.getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.tourmate",
-                        photoFile);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(cameraIntent, REQUEST_CAMERA_CODE);
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CAMERA_CODE &&
-                resultCode == Activity.RESULT_OK){
-          //  Log.e(TAG, "onActivityResult: "+currentPhotoPath);
-            File file = new File(currentPhotoPath);
-            //eventViewModel.uploadImageToFirebaseStorage(file, eventId);
-
-        }
-    }
 }

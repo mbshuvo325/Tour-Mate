@@ -15,7 +15,10 @@ import androidx.lifecycle.ViewModelProviders;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,8 @@ public class location_fragment extends Fragment implements OnMapReadyCallback {
     private Button resturentbtn,atmbtn;
     private Location myLocation = null;
     private NearbyViewModels nearbyViewModel;
+    private Spinner placespinner;
+    private String type="";
 
 
     public location_fragment() {
@@ -71,7 +76,68 @@ public class location_fragment extends Fragment implements OnMapReadyCallback {
                 .findFragmentById(R.id.nearby_map);
         mapFragment.getMapAsync(this);
         resturentbtn = view.findViewById(R.id.resturent);
-        atmbtn = view.findViewById(R.id.atm);
+        placespinner = view.findViewById(R.id.locationSpinner);
+
+        String placename[] = getResources().getStringArray(R.array.place_type);
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item, placename);
+       // ArrayAdapter<String> distanceAdapter = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item, distance);
+
+        placespinner.setAdapter(adapter);
+
+        placespinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String placeTypeName = adapterView.getItemAtPosition(i).toString();
+                googleMap.clear();
+
+                if (placeTypeName.equals("restaurant"))
+                {
+                    googleMap.clear();
+                    type ="restaurant";
+                    Toast.makeText(getActivity(), "restaurant", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (placeTypeName.equals("atm"))
+                {
+                    googleMap.clear();
+                    type ="atm";
+                    Toast.makeText(getActivity(), "atm", Toast.LENGTH_SHORT).show();
+
+                }
+
+                else if (placeTypeName.equals("tourist_attraction"))
+                {
+                    googleMap.clear();
+                    type ="tourist_attraction";
+                    Toast.makeText(getActivity(), "tourist_attraction", Toast.LENGTH_SHORT).show();
+
+                }   else if (placeTypeName.equals("bus_station"))
+                {
+                    googleMap.clear();
+                    type ="bus_station";
+                    Toast.makeText(getActivity(), "bus station", Toast.LENGTH_SHORT).show();
+
+                }
+                else if (placeTypeName.equals("train_station"))
+                {
+                    googleMap.clear();
+                    type ="train_station";
+                    Toast.makeText(getActivity(), "train station", Toast.LENGTH_SHORT).show();
+
+                }
+                else
+                {
+                    googleMap.clear();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         locationViewModel.locationLD.observe(this, new Observer<Location>() {
             @Override
@@ -92,22 +158,12 @@ public class location_fragment extends Fragment implements OnMapReadyCallback {
         resturentbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 googleMap.clear();
-                Type = "restaurant";
                 getNearByResponseData();
+
             }
         });
 
-        atmbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                googleMap.clear();
-                Type = "atm";
-                getNearByResponseData();
-            }
-        });
     }
 
     @Override
@@ -126,7 +182,6 @@ public class location_fragment extends Fragment implements OnMapReadyCallback {
                 myLocation.getLongitude(),
                 Type,
                Apikey);
-        Toast.makeText(getActivity(), "btn click", Toast.LENGTH_SHORT).show();
         nearbyViewModel.getResponseFromRepository(endUrl)
         .observe(this, new Observer<NearbyResponseBody>() {
             @Override

@@ -19,6 +19,9 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/login_Fragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_login_Fragment_to_regestration_fragment"
+            app:destination="@id/regestration_fragment" />
     </fragment>
     <fragment
         android:id="@+id/event_List"
@@ -91,4 +94,9 @@
         android:name="com.example.tourmate.fragment.Gallery_fragment"
         android:label="fragment_gallery_fragment"
         tools:layout="@layout/fragment_gallery_fragment" />
+    <fragment
+        android:id="@+id/regestration_fragment"
+        android:name="com.example.tourmate.fragment.regestration_fragment"
+        android:label="fragment_regestration_fragment"
+        tools:layout="@layout/fragment_regestration_fragment" />
 </navigation>

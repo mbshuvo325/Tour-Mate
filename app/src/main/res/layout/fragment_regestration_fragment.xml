@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".fragment.regestration_fragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name"
+        android:id="@+id/nameIDET"
+        android:inputType="text"
+        android:padding="6dp"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Email"
+        android:id="@+id/uerEmail"
+        android:inputType="textEmailAddress"
+        android:padding="6dp"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="New Password"
+        android:id="@+id/uerNewPassword"
+        android:inputType="numberPassword"
+        android:padding="6dp"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Confirm Password"
+        android:id="@+id/uerConfirmPassword"
+        android:inputType="numberPassword"
+        android:padding="6dp"
+        android:textSize="20sp"/>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:text="Register"
+        android:id="@+id/registerUser"
+        android:padding="6dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Already Have Account? Login Here"
+        android:id="@+id/gotoLogin"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:padding="6dp"/>
+
+
+</LinearLayout>
