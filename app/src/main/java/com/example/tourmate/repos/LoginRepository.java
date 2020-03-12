@@ -1,5 +1,7 @@
 package com.example.tourmate.repos;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -16,6 +18,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class LoginRepository {
     private FirebaseAuth firebaseAuth;
@@ -65,8 +69,9 @@ public class LoginRepository {
                     firebaseUser = firebaseAuth.getCurrentUser();
                     stateLiveData.postValue(LoginViewModel.AuthenticationState.AUTHENTICATED);
                     rootRef = FirebaseDatabase.getInstance().getReference();
+                    Log.i(TAG, "onComplete: "+firebaseUser.getUid());
                     userRef = rootRef.child(firebaseUser.getUid());
-                    userInfo.child("userInfo");
+                    userInfo =userRef.child("userInfo");
                     String userId = firebaseUser.getUid();
                     userReg.setUesrID(userId);
                     userInfo.setValue(userReg).addOnSuccessListener(new OnSuccessListener<Void>() {

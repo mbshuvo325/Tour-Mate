@@ -55,10 +55,6 @@ public class MainActivity extends AppCompatActivity
     private LocationViewModel locationViewModel;
     private LoginViewModel loginViewModel;
 
-
-    // public MutableLiveData<TourmateEvent> eventList = new MutableLiveData<>();
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,8 +114,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-
-        ///
 
     }
 
@@ -192,7 +186,5 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 }
             };
-
-
 
 }

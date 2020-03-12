@@ -1,68 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/registerbackimg"
     tools:context=".fragment.regestration_fragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Name"
-        android:id="@+id/nameIDET"
-        android:inputType="text"
-        android:padding="6dp"
-        android:textSize="20sp"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Email"
-        android:id="@+id/uerEmail"
-        android:inputType="textEmailAddress"
-        android:padding="6dp"
-        android:textSize="20sp"/>
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/regdialog"
+        android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="New Password"
-        android:id="@+id/uerNewPassword"
-        android:inputType="numberPassword"
-        android:padding="6dp"
-        android:textSize="20sp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:background="@drawable/usernameimg"
+                android:hint="Enter Name"
+                android:id="@+id/nameIDET"
+                android:inputType="text"
+                android:padding="6dp"
+                android:textSize="20sp"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Confirm Password"
-        android:id="@+id/uerConfirmPassword"
-        android:inputType="numberPassword"
-        android:padding="6dp"
-        android:textSize="20sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:background="@drawable/usernameimg"
+                android:hint="Enter Email"
+                android:id="@+id/uerEmail"
+                android:inputType="textEmailAddress"
+                android:padding="6dp"
+                android:textSize="20sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:background="@drawable/passimg"
+                android:hint="Enter password"
+                android:id="@+id/uerNewPassword"
+                android:inputType="numberPassword"
+                android:padding="6dp"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="20dp"
+                android:visibility="gone"
+                android:id="@+id/toogleVisibleRepassword"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_toggle_show"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/toogleInvisibleRepassword"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_toggle_invisible"/>
+
+        </RelativeLayout>
 
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textSize="20sp"
-        android:text="Register"
-        android:id="@+id/registerUser"
-        android:padding="6dp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:background="@drawable/passimg"
+                android:hint="Confirm password"
+                android:id="@+id/uerConfirmPassword"
+                android:inputType="numberPassword"
+                android:padding="6dp"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginRight="20dp"
+                android:visibility="gone"
+                android:id="@+id/toogleVisibleReConpassword"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_toggle_show"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/toogleInvisibleConRepassword"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_toggle_invisible"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Already Have Account? Login Here"
-        android:id="@+id/gotoLogin"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:padding="6dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:background="@drawable/registerback"
+                android:id="@+id/registerUser"
+                android:inputType="textEmailAddress"
+                android:padding="6dp"
+                android:textSize="20sp"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Already Have Account? Login Here"
+            android:id="@+id/gotoLogin"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:textColor="#0000ff"
+            android:textSize="15sp"
+            android:padding="6dp"/>
 
 
-</LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

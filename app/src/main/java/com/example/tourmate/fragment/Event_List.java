@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -18,6 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.example.tourmate.R;
 import com.example.tourmate.adapter.EveentAdapter;
@@ -35,16 +38,21 @@ public class Event_List extends Fragment {
     private EventViewModel eventViewModel;
     private EveentAdapter adapter;
     private RecyclerView eventRV;
+    private TextView addEventTV;
+    private TourmateEvent tourmateEvent = new TourmateEvent();
 
 
     public Event_List() {
         // Required empty public constructor
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
@@ -76,6 +84,11 @@ public class Event_List extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        addEventTV = view.findViewById(R.id.addEvent);
+
+        if (tourmateEvent == null){
+            addEventTV.setVisibility(View.VISIBLE);
+        }
         eventViewModel.eventListLD.observe(this, new Observer<List<TourmateEvent>>() {
             @Override
             public void onChanged(List<TourmateEvent> tourmateEvents) {
